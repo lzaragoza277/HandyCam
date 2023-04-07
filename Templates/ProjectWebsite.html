@@ -1,8 +1,24 @@
 <!DOCTYPE html>
 <html>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <style>
     html {
         background-color: rgb(39, 49, 53);
+    }
+
+    .HeadTitle i {
+        color: rgb(0, 119, 255);
+        font-size: xx-large;
+        margin-right: 10px;
+    }
+
+    .HeadTitle h1,
+    .HeadTitle i {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: right;
     }
 
     h1 {
@@ -11,26 +27,44 @@
         font-weight: normal;
     }
 
-    .botnav {
-        background-color: rgb(26, 33, 36);
-        border: white;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: x-large;
-        font-weight: 400;
-        margin-top: 30px;
-        text-align: center;
+    .buttons {
+        text-align: justify;
+    }
+
+    .buttons:after {
+        content: '';
+        display: inline-block;
+        width: 99.5%;
+        /* generates an extra transparent line */
+    }
+
+    /* makeup*/
+    .buttons {
+        min-width: 45em;
+        padding: 1.2em 1em 0;
+        box-shadow: 0 0 5px;
+        margin: 1em;
+        border-top: 0.25em;
     }
 
     .camera-button {
         background-color: rgb(39, 49, 53);
-        height: 40px;
-        width: 80px;
+        border-color: white;
+        border-radius: 15px;
+        color: white;
+        font-size: x-large;
+        height: 80px;
+        width: 200px;
     }
 
     .share-button {
         background-color: rgb(39, 49, 53);
-        height: 40px;
-        width: 80px;
+        border-color: white;
+        border-radius: 15px;
+        color: white;
+        font-size: xx-large;
+        height: 80px;
+        width: 200px;
     }
 
     .end-button {
@@ -39,10 +73,9 @@
         border-color: white;
         color: white;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: medium;
-        margin-top: 25px;
-        height: 40px;
-        width: 100px;
+        font-size: x-large;
+        height: 80px;
+        width: 200px;
     }
 
     .open-button {
@@ -51,10 +84,9 @@
         border-color: white;
         color: white;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: medium;
-        margin-top: 25px;
-        height: 40px;
-        width: 80px;
+        font-size: x-large;
+        height: 80px;
+        width: 200px;
     }
 
     .record-button {
@@ -63,18 +95,20 @@
         border-color: white;
         color: white;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: small;
-        height: 40px;
-        width: 100px;
+        font-size: x-large;
+        height: 80px;
+        width: 200px;
     }
 </style>
 
 <title>Handy Cam Project</title>
 
 <body>
-    <h1>
-        HandyCam
-    </h1>
+
+    <div class="HeadTitle">
+        <i class="fa fa-american-sign-language-interpreting"></i>
+        <h1>HandyCam</h1>
+    </div>
 
     <div class="container">
         <div class="row">
@@ -87,7 +121,7 @@
 
     <div class="chat-popup" id="myForm">
         <form action="/action_page.php" class="form-container">
-            <h1>Chat</h1>
+            <h2>Chat</h2>
 
             <label for="msg"><b>Message</b></label>
             <textarea placeholder="Type message.." name="msg" required></textarea>
@@ -107,12 +141,12 @@
         }
     </script>
 
-    <div class="botnav">
-        <button class="camera-button">Camera</button>
-        <button class="share-button">Share</button>
+    <div class="buttons">
+        <button class="camera-button"><i class="fa fa-video-camera"></i> Camera</button>
+        <button class="share-button"><i class="fa fa-share-square-o"></i> Share</button>
         <button class="end-button">End Call</button>
-        <button class="open-button" onclick="openForm()">Chat</button>
-        <button class="record-button">Screen Record</button>
+        <button class="open-button" onclick="openForm()"><i class="fa fa-comments"></i> Chat</button>
+        <button class="record-button"><i class="fa fa-file-video-o"></i> Record</button>
     </div>
 </body>
 
