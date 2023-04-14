@@ -5,6 +5,7 @@ import numpy as np
 import math
 from flask import Flask, render_template, Response
 
+
 app = Flask(__name__)
 
 
@@ -20,12 +21,40 @@ counter = 0
 
 labels = ["A", "B", "C"]
 letter_counts = {label: 0 for label in labels}
+current_label = labels[0]
+switch_threshold = 100
 last_prediction = {}
+current_label = labels[0]
+
+
 
 @app.route('/')
-def index():
-    return render_template('ProjectWebsite.html')
 
+def index():
+    global last_prediction
+    prediction_str = ""
+    total_frames = sum(letter_counts.values())
+
+    if total_frames > 0:
+        current_prediction = {label: count / total_frames * 100 for label, count in letter_counts.items()}
+        last_prediction = current_prediction
+    else:
+        current_prediction = last_prediction
+
+    for label, percentage in current_prediction.items():
+        prediction_str += f"{label}: {percentage:.2f}%<br>"
+
+    return render_template('ProjectWebsite.html', prediction=prediction_str)
+
+def update_letter_counts(prediction):
+    global letter_counts, current_label
+    max_percentage = max(prediction.values())
+    max_label = max(prediction, key=prediction.get)
+    if max_label != current_label and max_percentage >= switch_threshold:
+        current_label = max_label
+        letter_counts = {label: 0 for label in labels}
+
+    letter_counts[current_label] += 1
 def gen():
     global last_prediction
     while True:
@@ -55,7 +84,8 @@ def gen():
                 wGap = math.ceil((imgSize - wCal) / 2)
                 imgWhite[:, wGap:wCal + wGap] = imgResize
                 prediction, index = classifier.getPrediction(imgWhite, draw=False)
-                letter_counts[labels[index]] += 1
+                prediction_dict = {labels[i]: prediction[i] for i in range(len(prediction))}
+                update_letter_counts(prediction_dict)
 
             else:
                 k = imgSize / w
@@ -66,18 +96,23 @@ def gen():
                 imgWhite[hGap:hCal + hGap, :] = imgResize
                 prediction, index = classifier.getPrediction(imgWhite, draw=False)
 
+
             cv2.rectangle(imgOutput, (x - offset, y - offset - 50),
                           (x - offset + 90, y - offset - 50 + 50), (255, 0, 255), cv2.FILLED)
             cv2.putText(imgOutput, labels[index], (x, y - 26), cv2.FONT_HERSHEY_COMPLEX, 1.7, (255, 255, 255), 2)
-            cv2.rectangle(imgOutput, (x - offset, y - offset),
-                          (x + w + offset, y + h + offset), (255, 0, 255), 4)
+
+            # Display the percentage for each label on the camera feed
             total_frames = 0
             for count in letter_counts.values():
                 total_frames += count
             current_prediction = {}
             for label, count in letter_counts.items():
                 percentage = count / total_frames * 100 if total_frames > 0 else 0
-                print(f"{label}: {percentage:.2f}%")
+                current_prediction[label] = f"{label}: {percentage:.2f}%"
+                cv2.putText(imgOutput, current_prediction[label], (10, 50 + 30 * labels.index(label)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+            cv2.rectangle(imgOutput, (x - offset, y - offset),
+                          (x + w + offset, y + h + offset), (255, 0, 255), 4)
 
             cv2.imshow("ImageCrop", imgCrop)
             cv2.imshow("ImageWhite", imgWhite)
@@ -85,6 +120,7 @@ def gen():
         cv2.imshow("Image", imgOutput)
         cv2.waitKey(1)
         ret, buffer = cv2.imencode('.jpg', imgOutput)
+
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
