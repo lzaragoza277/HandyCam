@@ -179,6 +179,15 @@ z
     height: 80px;
     width: 200px;
   }
+  
+/*   video element for the screen sharing (aka the box that'll be reflected) */
+  .video-element {
+      position: absolute;
+      left: 0;
+      width: 50%;
+      height: 100%;
+    }
+
 </style>
 
 <title>Handy Cam Project</title>
@@ -246,31 +255,22 @@ z
   </div>
 
 
-  <!--   attempt to create a chat box with message inputs  -->
-  <!--   <div id="chat-container">
-    <ul id="message-list"></ul>
-    <input type="text" id="message-input" placeholder="Type your message...">
-  </div>
-
-  <script>
-    function sendMessage() {
-      var messageInput = document.getElementById("message-input");
-      var messageList = document.getElementById("message-list");
-
-      var message = messageInput.value.trim();
-      if (message) {
-        var messageItem = document.createElement("li");
-        messageItem.innerHTML = message;
-        messageList.appendChild(messageItem);
-        messageInput.value = "";
-      }
-    }
-      
-    document.getElementById("message-input").onkeypress = function(event) {
-    if (event.keyCode == 13) { // If Enter key is pressed
-      sendMessage();
-    }
-  </script> -->
+  <!--   Code to "reflect" our screen share  -->
+  <video id="video-element" autoplay></video>
+    <script>
+      var recorder;
+      var videoElement = document.getElementById('video-element'); 
+      document.getElementById('share-btn').onclick = function() {
+navigator.mediaDevices.getDisplayMedia({video: true, audio: true}).then(function(stream) {
+          recorder = RecordRTC(stream, {
+            type: 'video'
+          });
+          recorder.startRecording();
+          
+          videoElement.srcObject = stream;
+        });
+      };
+    </script>
 
 </body>
 
