@@ -213,9 +213,9 @@ submitButton.addEventListener('click', (event) => {
                                 3. Each question will be worth 10 points.                   <br>
                                 4. Once you get 80% or above recognition, you will receive the points
                             </p>
-                    
+
                             <button type="button" onclick="closePopup()">OK</button>
-                        
+
                         </div>
                         
                     </form>
@@ -236,6 +236,7 @@ submitButton.addEventListener('click', (event) => {
 
             function closePopup(){
                 popup.classList.remove("open-popup");
+                window.location.href = "quiz.html";
             }
 
         </script>
