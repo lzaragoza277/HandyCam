@@ -93,5 +93,8 @@ def gen():
 def video_feed():
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
+
+
 if __name__ == '__main__':
     app.run(debug=True,port=5000, host='0.0.0.0')

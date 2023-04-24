@@ -177,7 +177,7 @@
 
                 <!-- <div class="form"> -->
 
-                    <form class = "quiz_form">
+                    <form id="quiz-form" class = "quiz_form">
               
                         <label for = "Fullname" id = "name"> Please enter your name: </label>
                         
@@ -193,6 +193,16 @@
                         </div> -->
                         
                         <button type="submit" class="quiz-button" onclick="openPopup()"> Start the Quiz </button>
+                        <script>const form = document.getElementById('quiz-form');
+const submitButton = document.querySelector('.quiz-button');
+
+submitButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  const nameInput = document.getElementById('Fullname');
+  const name = nameInput.value;
+  localStorage.setItem('name', name);
+});
+</script>
                         
                         <div class="popup" id="popup">
                     

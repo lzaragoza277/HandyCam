@@ -126,5 +126,15 @@ def gen():
 def video_feed():
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/quiz')
+def quiz():
+    return render_template('Quizpage01.html')
+
+@app.route('/quiz1')
+def quiz1():
+    return render_template('quiz.html')
+
+
+
 if __name__ == '__main__':
     app.run(debug=True,port=5000, host='0.0.0.0')
